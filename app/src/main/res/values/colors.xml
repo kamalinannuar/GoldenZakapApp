@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="my_light_primarydark">#DAA520</color>
+    <color name="my_light_primary">#E6BE8A</color>
+    <color name="darkerGolden">#FFD700</color> <!-- Replace this with your desired darker golden color -->
+
+</resources>
+
