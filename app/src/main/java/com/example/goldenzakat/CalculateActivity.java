@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CalculateActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,6 +43,9 @@ public class CalculateActivity extends AppCompatActivity implements View.OnClick
 
         btnCalculate.setOnClickListener(this);
         btnReset.setOnClickListener(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -51,7 +55,6 @@ public class CalculateActivity extends AppCompatActivity implements View.OnClick
                 String weightText = etWeight.getText().toString();
                 String goldValuePerGramText = etGoldValuePerGram.getText().toString();
 
-                // Check if the inputs are empty or null
                 if (weightText.isEmpty() || goldValuePerGramText.isEmpty() ||
                         (!radioKeep.isChecked() && !radioWear.isChecked())) {
                     throw new NumberFormatException("Please enter all required information.");
@@ -85,53 +88,49 @@ public class CalculateActivity extends AppCompatActivity implements View.OnClick
                 // Calculate the total zakat
                 double zakat = 0.025 * totalGoldValueZakatPayable;
 
-                // Display the results with black text color
                 String result = String.format("Total Value of Gold: %.2f\n" +
                         "Total Gold Value Zakat Payable: %.2f\n" +
                         "Total Zakat: %.2f", totalValue, totalGoldValueZakatPayable, zakat);
                 tvOutput.setText(result);
                 tvOutput.setTextColor(getResources().getColor(android.R.color.black));
 
-} catch (NumberFormatException nfe) {
-                // Display the error message with red text color
-                tvOutput.setText("Please fill all fields!");
-                tvOutput.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+}catch (NumberFormatException nfe) {
+                Toast.makeText(getApplicationContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show();
             }
 
         } else if (v.getId() == R.id.btnReset) {
             etWeight.setText("");
             etGoldValuePerGram.setText("");
             tvOutput.setText("");
-
-            // Uncheck both radio buttons
             radioKeep.setChecked(false);
             radioWear.setChecked(false);
         }
     }
-
-
     @Override
-
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+
         if (item.getItemId() == R.id.item_share) {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("type/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Please use my application - https://t.co/app");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Visit my GitHub - https://github.com/kamalinannuar/GoldenZakapApp");
             startActivity(Intent.createChooser(shareIntent, null));
-
             return true;
         } else if (item.getItemId() == R.id.item_about) {
             Intent aboutIntent = new Intent (this, AboutActivity.class);
             startActivity(aboutIntent);
-
         }
         return false;
+    }
 
-    }
-    }
+
+}
 
